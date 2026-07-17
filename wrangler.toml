@@ -1,7 +1,9 @@
 name = "promptpot-site"
+main = "src/worker.js"
 compatibility_date = "2026-07-18"
 workers_dev = true
 preview_urls = true
 
 [assets]
 directory = "dist"
+binding = "ASSETS"

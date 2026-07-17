@@ -1,0 +1,80 @@
+---
+import Base from '../layouts/Base.astro';
+import { t, repo, qiitaUrl } from '../data/i18n.js';
+const { locale } = Astro.props;
+const s = t[locale];
+---
+<Base locale={locale}>
+  <div class="wrap">
+    <header>
+      <span class="eyebrow"><span class="dot"></span>{s.eyebrow}</span>
+      <h1>{s.h1a}<span class="hl">{s.h1hl}</span>{s.h1b}</h1>
+      <p class="lede">{s.lede}</p>
+      <div class="cta-row">
+        <a class="btn primary" href={repo.url} rel="noopener">
+          {s.ctaGithub}
+          <span class="metric" id="stars" aria-label="GitHub stars">★ —</span>
+        </a>
+        <a class="btn" href="#findings">{s.ctaFindings}</a>
+      </div>
+    </header>
+
+    <div class="stats">
+      {s.stats.map((x) => (
+        <div class="stat"><div class="n">{x.n}</div><div class="l">{x.label}</div></div>
+      ))}
+      <div class="stat"><div class="n" id="views">—</div><div class="l">{s.statViews}</div></div>
+    </div>
+
+    <section id="findings">
+      <h2>{s.whatShowedUp}</h2>
+      <div class="findings">
+        {s.findings.map((f) => (
+          <div class={f.warn ? 'finding warn' : 'finding'}>
+            <h3>{f.title}</h3>
+            <p set:html={f.body}></p>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section id="reads">
+      <h2>{s.readTitle}</h2>
+      <p class="body">{s.readBody} <a href={qiitaUrl} rel="noopener">{s.readLink}</a></p>
+    </section>
+
+    <section id="run">
+      <h2>{s.runTitle}</h2>
+      <p class="body">{s.runBody}</p>
+      <pre><span class="comment">{s.runComment}</span>
+docker run -d --name promptpot \
+  -p 11434:11434 -p 1234:1234 -p 8000:8000 -p 7860:7860 -p 8188:8188 \
+  -v ./log:/data/honeypots/log \
+  ghcr.io/{repo.owner}/{repo.name}:latest</pre>
+    </section>
+
+    <footer>
+      PromptPot · MIT License · <a href={repo.url} rel="noopener">github.com/{repo.owner}/{repo.name}</a><br />
+      {s.footer}
+    </footer>
+  </div>
+
+  <script type="module" define:vars={{ owner: repo.owner, name: repo.name }}>
+    // Live GitHub stars (public API, no token)
+    const el = document.getElementById('stars');
+    try {
+      const r = await fetch(`https://api.github.com/repos/${owner}/${name}`, { headers: { Accept: 'application/vnd.github+json' } });
+      if (r.ok) { const d = await r.json(); el.textContent = `★ ${d.stargazers_count}`; }
+    } catch (_) {}
+
+    // Live page views from our Worker function (served under /api/views)
+    const v = document.getElementById('views');
+    try {
+      const r = await fetch('/api/views');
+      if (r.ok) {
+        const d = await r.json();
+        if (typeof d.views === 'number') v.textContent = d.views.toLocaleString();
+      }
+    } catch (_) {}
+  </script>
+</Base>
