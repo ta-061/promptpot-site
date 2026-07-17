@@ -20,8 +20,8 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
 </head>
 <body>
   <slot />
-  <!-- Cloudflare Web Analytics: token injected after Pages project is created -->
-  <script is:inline defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token":"CF_ANALYTICS_TOKEN"}'></script>
+  <!-- Cloudflare Web Analytics -->
+  <script is:inline defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "9385fd5fe6d940a0ae9a0e8c1503323c"}'></script>
 </body>
 </html>
 
