@@ -1,6 +1,6 @@
 ---
 title: "Two weeks of a fake local-LLM honeypot: AI coding agents showed up"
-date: 2026-07-18
+date: 2026-07-12
 lang: en
 summary: "Across three internet-facing sensors, the single most frequent visitor to fake Ollama endpoints wasn't a vulnerability scanner — it was an AI coding agent looking for free compute."
 ---
