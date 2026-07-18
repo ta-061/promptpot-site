@@ -4,11 +4,6 @@ compatibility_date = "2026-07-01"
 workers_dev = true
 preview_urls = true
 
-[vars]
-# Account ID is not a secret; keeping it here prevents `wrangler deploy` from
-# wiping it on each deploy. The API token stays a Secret (set in the dashboard).
-CF_ACCOUNT_ID = "e9c317a9a648efa5bd71fe53873f1988"
-
 [assets]
 directory = "dist"
 binding = "ASSETS"

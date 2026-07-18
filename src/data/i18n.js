@@ -29,7 +29,6 @@ export const t = {
       "PromptPot emulates the HTTP APIs of local LLM services — Ollama, LM Studio, vLLM, Gradio, ComfyUI — and logs every probe and prompt. It runs no model and executes nothing. Here's what showed up across three internet-facing sensors in two weeks.",
     ctaGithub: 'View on GitHub',
     ctaFindings: 'Read the findings',
-    statViews: 'page views',
     whatShowedUp: 'What showed up',
     readTitle: 'Read the writeup',
     readBody:
@@ -88,7 +87,6 @@ export const t = {
       'PromptPotは、ローカルLLMサービス（Ollama, LM Studio, vLLM, Gradio, ComfyUI）のHTTP APIを模倣し、あらゆる探索とプロンプトを記録します。モデルは動かさず、攻撃者の入力も実行しません。3拠点のセンサーに2週間で何が来たかをまとめました。',
     ctaGithub: 'GitHubで見る',
     ctaFindings: '観測結果を読む',
-    statViews: 'ページビュー',
     whatShowedUp: '観測されたもの',
     readTitle: '記事を読む',
     readBody:

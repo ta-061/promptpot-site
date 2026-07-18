@@ -23,7 +23,6 @@ const s = t[locale];
       {s.stats.map((x) => (
         <div class="stat"><div class="n">{x.n}</div><div class="l">{x.label}</div></div>
       ))}
-      <div class="stat" id="views-tile"><div class="n" id="views">—</div><div class="l">{s.statViews}</div></div>
     </div>
 
     <section id="findings">
@@ -66,25 +65,5 @@ docker run -d --name promptpot \
       const r = await fetch(`https://api.github.com/repos/${owner}/${name}`, { headers: { Accept: 'application/vnd.github+json' } });
       if (r.ok) { const d = await r.json(); el.textContent = `★ ${d.stargazers_count}`; }
     } catch (_) {}
-
-    // Live page views from our Worker function (served under /api/views).
-    // Hide the tile until there is a positive count, so an empty "0" never shows.
-    const v = document.getElementById('views');
-    const tile = document.getElementById('views-tile');
-    try {
-      const r = await fetch('/api/views');
-      if (r.ok) {
-        const d = await r.json();
-        if (typeof d.views === 'number' && d.views > 0) {
-          v.textContent = d.views.toLocaleString();
-        } else if (tile) {
-          tile.style.display = 'none';
-        }
-      } else if (tile) {
-        tile.style.display = 'none';
-      }
-    } catch (_) {
-      if (tile) tile.style.display = 'none';
-    }
   </script>
 </Base>
