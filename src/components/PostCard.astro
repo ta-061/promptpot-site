@@ -1,0 +1,17 @@
+---
+import { t } from '../data/i18n.js';
+const { post, locale, href } = Astro.props;
+const s = t[locale];
+const d = post.data.date;
+const dateStr = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+const external = !!post.data.externalUrl;
+const target = external ? post.data.externalUrl : href;
+---
+<a class="postcard" href={target} rel={external ? 'noopener' : undefined}>
+  <div class="meta">
+    <span>{dateStr}</span>
+    {external && <span class="ext">{s.externalNote}</span>}
+  </div>
+  <h3>{post.data.title}</h3>
+  <p>{post.data.summary}</p>
+</a>

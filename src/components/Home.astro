@@ -1,8 +1,17 @@
 ---
 import Base from '../layouts/Base.astro';
-import { t, repo, qiitaUrl } from '../data/i18n.js';
+import PostCard from './PostCard.astro';
+import { t, repo } from '../data/i18n.js';
+import { getCollection } from 'astro:content';
 const { locale } = Astro.props;
 const s = t[locale];
+const prefix = locale === 'en' ? '' : '/ja';
+
+const posts = (await getCollection('posts'))
+  .filter((p) => p.data.lang === locale && !p.data.draft)
+  .sort((a, b) => b.data.date - a.data.date);
+const latest = posts.slice(0, 3);
+const postHref = (p) => `${prefix}/posts/${p.id.split('/').pop()}/`;
 ---
 <Base locale={locale}>
   <div class="wrap">
@@ -39,7 +48,10 @@ const s = t[locale];
 
     <section id="reads">
       <h2>{s.readTitle}</h2>
-      <p class="body">{s.readBody} <a href={qiitaUrl} rel="noopener">{s.readLink}</a></p>
+      <div class="postlist">
+        {latest.map((p) => <PostCard post={p} locale={locale} href={postHref(p)} />)}
+      </div>
+      <p class="body" style="margin-top:18px"><a href={`${prefix}/posts/`}>{s.postsAll}</a></p>
     </section>
 
     <section id="run">

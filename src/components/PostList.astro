@@ -1,0 +1,30 @@
+---
+import Base from '../layouts/Base.astro';
+import PostCard from './PostCard.astro';
+import { t } from '../data/i18n.js';
+import { getCollection } from 'astro:content';
+const { locale } = Astro.props;
+const s = t[locale];
+const prefix = locale === 'en' ? '' : '/ja';
+const posts = (await getCollection('posts'))
+  .filter((p) => p.data.lang === locale && !p.data.draft)
+  .sort((a, b) => b.data.date - a.data.date);
+const postHref = (p) => `${prefix}/posts/${p.id.split('/').pop()}/`;
+---
+<Base locale={locale}>
+  <div class="wrap">
+    <header>
+      <span class="eyebrow"><span class="dot"></span>{s.eyebrow}</span>
+      <h1>{s.postsIndexTitle}</h1>
+      <p class="lede">{s.postsIndexLede}</p>
+    </header>
+    <section>
+      <div class="postlist">
+        {posts.map((p) => <PostCard post={p} locale={locale} href={postHref(p)} />)}
+      </div>
+    </section>
+    <footer>
+      PromptPot · MIT License · <a href="https://github.com/ta-061/promptpot" rel="noopener">github.com/ta-061/promptpot</a>
+    </footer>
+  </div>
+</Base>

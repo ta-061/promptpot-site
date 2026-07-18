@@ -1,0 +1,37 @@
+---
+import Base from '../../layouts/Base.astro';
+import { t } from '../../data/i18n.js';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('posts');
+  // On-site pages only for entries that have a body (no externalUrl).
+  return posts
+    .filter((p) => !p.data.externalUrl && !p.data.draft)
+    .map((p) => ({
+      params: { slug: p.id.split('/').pop() },
+      props: { post: p },
+    }));
+}
+
+const { post } = Astro.props;
+const locale = post.data.lang;
+const s = t[locale];
+const prefix = locale === 'en' ? '' : '/ja';
+const { Content } = await render(post);
+const d = post.data.date;
+const dateStr = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+---
+<Base locale={locale} title={post.data.title + ' — PromptPot'} description={post.data.summary}>
+  <div class="wrap">
+    <a class="backlink" href={`${prefix}/posts/`}>{s.back}</a>
+    <article class="post">
+      <h1>{post.data.title}</h1>
+      <div class="meta">{dateStr}</div>
+      <Content />
+    </article>
+    <footer>
+      PromptPot · MIT License · <a href="https://github.com/ta-061/promptpot" rel="noopener">github.com/ta-061/promptpot</a>
+    </footer>
+  </div>
+</Base>
