@@ -9,14 +9,14 @@ async function getViews(env, debug = false) {
   if (!env.CF_API_TOKEN || !env.CF_ACCOUNT_ID) return wrap(null, 'missing_secret');
   const end = new Date();
   const start = new Date(end.getTime() - 30 * 24 * 3600 * 1000);
-  const iso = (d) => d.toISOString();
+  const day = (d) => d.toISOString().slice(0, 10); // YYYY-MM-DD
   const query = `
-    query Views($accountTag: String!, $siteTag: String!, $start: Time!, $end: Time!) {
+    query Views($accountTag: String!, $siteTag: String!, $start: Date!, $end: Date!) {
       viewer {
         accounts(filter: { accountTag: $accountTag }) {
           rumPageloadEventsAdaptiveGroups(
-            limit: 1
-            filter: { siteTag: $siteTag, datetime_geq: $start, datetime_leq: $end }
+            limit: 1000
+            filter: { siteTag: $siteTag, date_geq: $start, date_leq: $end }
           ) {
             count
           }
@@ -28,8 +28,8 @@ async function getViews(env, debug = false) {
     variables: {
       accountTag: env.CF_ACCOUNT_ID,
       siteTag: SITE_TAG,
-      start: iso(start),
-      end: iso(end),
+      start: day(start),
+      end: day(end),
     },
   };
   let r;
