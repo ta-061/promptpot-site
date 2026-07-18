@@ -24,7 +24,7 @@ const otherHref = locale === 'en' ? '/ja/' : '/';
   <meta property="og:url" content={canonical} />
   <meta property="og:image" content="https://promptpot.tatu-sec.dev/og-image.jpg" />
   <meta name="twitter:card" content="summary_large_image" />
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ccircle cx='8' cy='8' r='6' fill='%233fb950'/%3E%3C/svg%3E" />
+  <link rel="icon" type="image/svg+xml" href="/icon.svg" />
   <!-- set theme before paint to avoid flash -->
   <script is:inline>
     (function () {
@@ -40,7 +40,10 @@ const otherHref = locale === 'en' ? '/ja/' : '/';
 </head>
 <body>
   <div class="wrap topbar">
-    <a class="brand" href={locale === 'en' ? '/' : '/ja/'}>PromptPot</a>
+    <a class="brand" href={locale === 'en' ? '/' : '/ja/'}>
+      <img src="/icon.svg" alt="" width="22" height="22" />
+      PromptPot
+    </a>
     <div class="controls">
       <a class="ctl lang" href={otherHref} aria-label="Switch language">{otherLocale === 'ja' ? '日本語' : 'EN'}</a>
       <button class="ctl theme" id="theme-toggle" type="button" aria-label="Toggle color theme">
@@ -112,8 +115,9 @@ const otherHref = locale === 'en' ? '/ja/' : '/';
   .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 24px; }
 
   .topbar { display: flex; justify-content: space-between; align-items: center; padding: 20px 24px 0; }
-  .brand { font-family: var(--mono); font-weight: 700; font-size: 15px; color: var(--ink); }
+  .brand { font-family: var(--mono); font-weight: 700; font-size: 15px; color: var(--ink); display: inline-flex; align-items: center; gap: 8px; }
   .brand:hover { text-decoration: none; color: var(--accent); }
+  .brand img { display: block; }
   .controls { display: flex; gap: 8px; align-items: center; }
   .ctl {
     font-family: var(--mono); font-size: 13px; color: var(--muted);
